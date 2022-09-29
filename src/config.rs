@@ -124,7 +124,7 @@ impl Config {
             .arg(
                 Arg::with_name("daemon_rpc_addr")
                     .long("daemon-rpc-addr")
-                    .help("Bitcoin daemon JSONRPC 'addr:port' to connect (default: 127.0.0.1:8332 for mainnet, 127.0.0.1:18332 for testnet and 127.0.0.1:18443 for regtest)")
+                    .help("Bitcoin daemon JSONRPC 'addr:port' to connect (default: 127.0.0.1:8338 for mainnet, 127.0.0.1:18338 for testnet and 127.0.0.1:18443 for regtest)")
                     .takes_value(true),
             )
             .arg(
@@ -245,7 +245,7 @@ impl Config {
 
         let default_daemon_port = match network_type {
             #[cfg(not(feature = "liquid"))]
-            Network::Bitcoin => 8332,
+            Network::Bitcoin => 9338,
             #[cfg(not(feature = "liquid"))]
             Network::Testnet => 18332,
             #[cfg(not(feature = "liquid"))]
