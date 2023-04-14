@@ -286,6 +286,7 @@ impl Mempool {
 
         // Download and add new transactions from bitcoind's mempool
         let txids: Vec<&Txid> = new_txids.difference(&old_txids).collect();
+        //println!("{txids:?}");
         let to_add = match daemon.gettransactions(&txids) {
             Ok(txs) => txs,
             Err(err) => {

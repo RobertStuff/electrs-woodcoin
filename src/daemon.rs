@@ -483,10 +483,11 @@ impl Daemon {
     pub fn gettransactions(&self, txhashes: &[&Txid]) -> Result<Vec<Transaction>> {
         let params_list: Vec<Value> = txhashes
             .iter()
-            .map(|txhash| json!([txhash.to_hex(), /*verbose=*/ false]))
+            .map(|txhash| json!([txhash.to_hex(), /*verbose=*/ 0]))
             .collect();
-
+        //println!("{params_list:?}");
         let values = self.requests("getrawtransaction", &params_list)?;
+        // println!("{values:?}");
         let mut txs = vec![];
         for value in values {
             txs.push(tx_from_value(value)?);
