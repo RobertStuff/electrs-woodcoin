@@ -130,7 +130,12 @@ impl Connection {
     fn blockchain_headers_subscribe(&mut self) -> Result<Value> {
         let entry = self.query.chain().best_header();
         let hex_header = hex::encode(serialize(entry.header()));
-        let result = json!({"hex": hex_header, "height": entry.height()});
+        // let previous_block_get = &hex_header[8..72];
+        // let merkle_root_get = &hex_header[72..136];
+        // let previous_block: Vec<&str> =  previous_block_get.split(" ").rev().collect();
+        // println!("{}", previous_block_get);
+        // println!("{}", merkle_root_get);
+        let result = json!({"height": entry.height(), "hex": hex_header});
         self.last_header_entry = Some(entry);
         Ok(result)
     }
@@ -205,7 +210,7 @@ impl Connection {
             .chain_err(|| "missing header")?;
 
         if cp_height == 0 {
-            return Ok(json!(raw_header_hex));
+            return Ok(json!({"result": raw_header_hex, "height": height}));
         }
         let (branch, root) = get_header_merkle_proof(self.query.chain(), height, cp_height)?;
 
@@ -253,6 +258,7 @@ impl Connection {
 
     fn blockchain_estimatefee(&self, params: &[Value]) -> Result<Value> {
         let conf_target = usize_from_value(params.get(0), "blocks_count")?;
+        println!("{conf_target:?}");
         let fee_rate = self
             .query
             .estimate_fee(conf_target as u16)

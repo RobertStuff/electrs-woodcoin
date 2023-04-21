@@ -8,6 +8,7 @@ use error_chain::ChainedError;
 use std::process;
 use std::sync::{Arc, RwLock};
 use std::time::Duration;
+use std::env;
 
 use electrs::{
     config::Config,
@@ -133,4 +134,5 @@ fn main() {
         error!("server failed: {}", e.display_chain());
         process::exit(1);
     }
+    env::set_var("RUST_BACKTRACE", "1");
 }
